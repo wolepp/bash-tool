@@ -1,28 +1,13 @@
 #!/usr/bin/env bash
 # Wojciech Lepich
 
+ui=true
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source "$dir/ui.sh" 
-
-pause() {
-    read -rp "Press [Enter] key to continue..."
-}
-
-die() { # funkcja do wyjątków
-    local error=${1:-"Undefined error"}
-    echo "$0: ${BASH_LINENO[0]} $error"
-}
-
-one() {
-    echo "one() called"
-    die
-    pause
-}
+source "$dir/utils.sh"
 
 backup() {
-    echo "backupowanie" && sleep 1
-    echo "skończone"
-    pause
+    run backup.sh $dir
 }
 
 restore() {
@@ -43,6 +28,8 @@ showProcesses() {
 
 showDir() {
     echo $dir && sleep 2
+    echo "$dir/ui.sh" && sleep 2
+    pause
 }
 
 read_options() {
@@ -63,6 +50,20 @@ read_options() {
         ;;
     esac
 }
+
+show_main_menu() {
+    clear
+    echo "-----------------"
+    echo "   MENU GŁÓWNE   "
+    echo "-----------------"
+    echo "1. backup"
+    echo "2. przywracanie"
+    echo "3. disk health"
+    echo "4. logi systemowe"
+    echo "5. procesy"
+    echo "6. wyjście"
+}
+
 
 # =========== MAIN LOOP
 # clear
