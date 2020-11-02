@@ -7,7 +7,7 @@ source "$dir/ui.sh"
 source "$dir/utils.sh"
 
 backup() {
-    run backup.sh $dir
+    run backup.sh $dir $ui
 }
 
 restore() {
@@ -53,15 +53,15 @@ read_options() {
 
 show_main_menu() {
     clear
-    echo "-----------------"
-    echo "   MENU GŁÓWNE   "
-    echo "-----------------"
+    thin_divider
+    printcenter "MENU GŁÓWNE"
     echo "1. backup"
     echo "2. przywracanie"
     echo "3. disk health"
     echo "4. logi systemowe"
     echo "5. procesy"
     echo "6. wyjście"
+    thin_divider
 }
 
 

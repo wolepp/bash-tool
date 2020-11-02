@@ -3,7 +3,7 @@
 
 dir=$1
 if [ $# -eq 2 ]; then
-    ui=true
+    ui=$2
 fi
 source $dir/ui.sh
 source $dir/utils.sh
@@ -13,21 +13,23 @@ archiveName="home_$(basename $HOME)_$(date +%Y%m%d-%H%M%S)"
 archivePath=$HOME
 
 show_backup_menu() {
-    printcenter "Backup menu"
+    thin_divider
+    printcenter "BACKUP"
     echo "Folder do zbackupowania: $(textcolor green)$folderToBackup"
     resetstyle
     echo "Docelowa nazwa archiwum: $(textcolor green)$archiveName.tar.gz"
     resetstyle
     echo "Miejsce zapisu:          $(textcolor green)$archivePath"
     resetstyle
-    echo
+    thick_divider
     echo "1. Utwórz kopię zapasową"
     echo "2. Utwórz kopię zapasową (aktualizuj datę i czas)"
-    echo "-----------------------"
+    thin_divider
     echo "3. Zmień nazwę archiwum"
     echo "4. Zmień miejsce zapisu"
-    echo "-----------------------"
+    thin_divider
     echo "0. Powrót"
+    thin_divider
 }
 
 read_options() {
@@ -39,7 +41,6 @@ read_options() {
     3) change_archive_name ;;
     4) change_save_path ;;
     0) exit 0 ;;
-
     esac
 }
 

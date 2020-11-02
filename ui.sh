@@ -3,12 +3,24 @@
 
 width=$(tput cols)
 height=$(tput lines)
+thin_divider_char="-"
+thick_divider_char="="
 
 redraw() {
     width=$(tput cols)
     height=$(tput lines)
 }
 trap redraw WINCH
+
+thin_divider() {
+    printf "%.s$thin_divider_char" $(seq 1 $width)
+    printf '\n'
+}
+
+thick_divider() {
+    printf "%.s$thick_divider_char" $(seq 1 $width)
+    printf '\n'
+}
 
 resetstyle() {
     tput sgr0
