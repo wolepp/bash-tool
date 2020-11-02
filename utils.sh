@@ -11,7 +11,8 @@ pause() {
     read -rp "Press [Enter] key to continue..."
 }
 
-die() {
-    local error=${1:-"undefined error"}
-    echo "$0: ${BASH_LINEO[0]} $error"
+error() {
+    local e=${1:-"undefined error"}
+    echo "$0: $e"
+    pause
 }

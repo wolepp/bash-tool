@@ -2,8 +2,8 @@
 # Wojciech Lepich
 
 ui=true
-dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source "$dir/ui.sh" 
+dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+source "$dir/ui.sh"
 source "$dir/utils.sh"
 
 backup() {
@@ -63,7 +63,6 @@ show_main_menu() {
     echo "6. wyjście"
     thin_divider
 }
-
 
 # =========== MAIN LOOP
 # clear
