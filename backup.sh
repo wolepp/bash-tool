@@ -94,31 +94,11 @@ change_archive_name() {
     validate_filename "$newname"
     res="$?"
     while [[ "$res" -ne 0 ]]; do
-        printf "Wpisz nazwę (bez rozszerzenia): "
-        name=""
-        key=""
-        while [ "$key" != $'\e' ]; do # sprawdzanie po klawiszu, aż do [Esc]
-            read -s -n1 key
-            if [ "$key" == $'\e' ]; then # [Esc]
-                return 1
-            fi
-            if [[ "$key" == "" ]]; then # [Enter]
-                echo
-                break
-            fi
-            if [ "$key" == $'\b' ]; then # [Backspace]
-                echo -e "\b\b \b"
-            fi
-            name="$name$key"
-            echo -en "$key"
-            i=$((i+1))
-        done
-        validate_filename "$name"
+        read -rp "Wpisz nazwę (bez rozszerzenia): " newname
+        validate_filename "$newname"
         res="$?"
     done
-    echo "Nowa nazwa to: $newname"
-    pause
-
+    archiveName="$newname.tar.gz"
 }
 
 show_backup_menu() {
