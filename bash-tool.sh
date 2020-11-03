@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Wojciech Lepich
 
-ui=true
+ui=true # true tylko jeśli odpalone bez innych opcji
 dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 source "$dir/ui.sh"
 source "$dir/utils.sh"
