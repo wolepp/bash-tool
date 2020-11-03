@@ -14,14 +14,24 @@ archivePath="$HOME"
 folderToBackup="$HOME/test" ######################## WATCH OUT __ OVERRIDEN!!
 verbose=false
 
-check_if_exists() {
-    if [[ -f "$archivePath" ]]; then
-        error "'$archivePath' jest plikiem, zmień miejsce zapisu"
+validate_path() {
+    path="$1"
+    if [[ -f "$path" ]]; then
+        error "'$path' jest plikiem"
         return 1
     fi
-    if [[ ! -d "$archivePath" ]]; then
-        error "folder '$archivePath' nie istnieje"
+    if [[ ! -d "$path" ]]; then
+        error "folder '$path' nie istnieje"
         return 2
+    fi
+    return 0
+}
+
+check_if_file_exists() {
+    validate_path $archivePath
+    validate="$?"
+    if [[ "$validate" -gt 0 ]]; then
+        return 1
     fi
     if [[ -f "$archivePath/$archiveName" ]]; then
         local overwrite
@@ -54,15 +64,17 @@ validate_filename() {
 }
 
 make_backup() {
-    check_if_exists
+    check_if_file_exists
     if [[ $? -ne 0 ]]; then return 4; fi
     textcolor cyan
     echo "Tworzę kopię zapasową..."
     resetstyle
+    fullpath="$archivePath/$archiveName"
+    
     if [[ "$verbose" = true ]]; then
-        tar -cvzf "$archivePath/$archiveName" "$folderToBackup"
+        tar --exclude="$fullpath" -cvzf "$fullpath" "$folderToBackup"
     else
-        tar -czf "$archivePath/$archiveName" "$folderToBackup"
+        tar --exclude="$fullpath" -czf "$fullpath" "$folderToBackup"
     fi
     textcolor green
     echo "Utworzono kopię zapasową '$archiveName'"
@@ -89,7 +101,6 @@ make_backup_update_time() {
 
 change_archive_name() {
     local newname
-    i=0
     read -rp "Wpisz nazwę (bez rozszerzenia): " newname
     validate_filename "$newname"
     res="$?"
@@ -99,6 +110,19 @@ change_archive_name() {
         res="$?"
     done
     archiveName="$newname.tar.gz"
+}
+
+change_save_path() {
+    local newpath
+    read -rp "Wpisz ścieżkę: " newpath
+    validate_path "$newpath"
+    res="$?"
+    while [[ "$res" -ne 0 ]]; do
+        read -rp "Wpisz ścieżkę: " newpath
+        validate_path "$newpath"
+        res="$?"
+    done
+    archivePath="$newpath"
 }
 
 show_backup_menu() {
