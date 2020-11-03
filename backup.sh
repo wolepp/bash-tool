@@ -11,7 +11,6 @@ source $dir/utils.sh
 folderToBackup=$HOME
 archiveName="home_$(basename $HOME)_$(date +%Y%m%d-%H%M%S).tar.gz"
 archivePath="$HOME"
-folderToBackup="$HOME/test" ######################## WATCH OUT __ OVERRIDEN!!
 verbose=false
 
 validate_path() {
@@ -125,6 +124,19 @@ change_save_path() {
     archivePath="$newpath"
 }
 
+change_folder_to_backup() {
+    local newdir
+    read -rp "Wpisz ścieżkę: " newdir
+    validate_path "$newdir"
+    res="$?"
+    while [[ "$res" -ne 0 ]]; do
+        read -rp "Wpisz ścieżkę: " newdir
+        validate_path "$newdir"
+        res="$?"
+    done
+    folderToBackup="$newdir"
+}
+
 show_backup_menu() {
     thin_divider
     printcenter "BACKUP"
@@ -165,7 +177,7 @@ read_options() {
     4) change_save_path ;;
     5) switch_verbose ;;
     6) reset_archive_name ;;
-    7) change_archived_path ;;
+    7) change_folder_to_backup ;;
     0) exit 0 ;;
     esac
 }
