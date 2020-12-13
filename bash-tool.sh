@@ -65,7 +65,7 @@ read_options() {
     3) diskHealth ;;
     4) systemLogs ;;
     5) showProcesses ;;
-    6) exit 0 ;;
+    0) exit 0 ;;
     esac
 }
 
@@ -78,7 +78,7 @@ show_main_menu() {
     echo "3. disk health"
     echo "4. logi systemowe"
     echo "5. procesy"
-    echo "6. wyjście"
+    echo "0. wyjście"
     thin_divider
 }
 
