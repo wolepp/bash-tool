@@ -1,10 +1,4 @@
-#!/usr/bin/env bash
-# Wojciech Lepich
-
 dir=$1
-if [ $# -eq 2 ]; then
-    ui=$2
-fi
 source $dir/ui.sh
 source $dir/utils.sh
 
@@ -156,12 +150,12 @@ show_backup_menu() {
     echo "1. Utwórz kopię zapasową"
     echo "2. Utwórz kopię zapasową (z domyślną, zaktualizowaną nazwą)"
     thin_divider
-    echo "3. Zmień nazwę archiwum"
-    echo "4. Zmień miejsce zapisu"
-    echo "7. Zmień folder do zbackupowania"
+    echo "4. Zmień nazwę archiwum"
+    echo "5. Zmień miejsce zapisu"
+    echo "6. Zmień folder do zbackupowania"
     thin_divider
-    echo "5. Przestaw szczegółowe wypisywanie programu tar"
-    echo "6. Przywróć/aktualizuj domyślną nazwę archiwum"
+    echo "8. Przestaw szczegółowe wypisywanie programu tar"
+    echo "9. Przywróć/aktualizuj domyślną nazwę archiwum"
     thin_divider
     echo "0. Powrót"
     thin_divider
@@ -169,28 +163,24 @@ show_backup_menu() {
 
 read_options() {
     local choice
-    read -rp "Enter choice [a-z] " choice
+    read -rp "Wpisz opcję: " choice
     case $choice in
     1) make_backup ;;
     2) make_backup_update_time ;;
-    3) change_archive_name ;;
-    4) change_save_path ;;
-    5) switch_verbose ;;
-    6) reset_archive_name ;;
-    7) change_folder_to_backup ;;
+    4) change_archive_name ;;
+    5) change_save_path ;;
+    6) change_folder_to_backup ;;
+    8) switch_verbose ;;
+    9) reset_archive_name ;;
     0) exit 0 ;;
     esac
 }
 
 # ============================== Main Loop
-if [ "$ui" == true ]; then
-    tput clear
-    tput rc
-    while true; do
-        tput reset
-        show_backup_menu
-        read_options
-    done
-else
-    echo "Not ui. Backup do $archivePath/$archiveName.tar.gz" && sleep 2
-fi
+tput clear
+tput rc
+while true; do
+    tput reset
+    show_backup_menu
+    read_options
+done
