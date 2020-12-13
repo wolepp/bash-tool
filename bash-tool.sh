@@ -1,13 +1,30 @@
 #!/usr/bin/env bash
 # Wojciech Lepich
 
-ui=true # true tylko jeśli odpalone bez innych opcji
+Help() {
+    echo "Program bash-tool"
+    echo
+    echo "Program do zarządzania systemem"
+    echo "Tworzy kopie zapasowe i przywraca"
+    echo "Pokazuje logi systemowe (jeszcze nie)"
+    echo "Pokazuje procesy (jeszcze nie)"
+}
+
+while getopts ":h" option; do
+    case $option in
+        h)
+            Help
+            exit 0
+            ;;
+    esac
+done
+
 dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 source "$dir/ui.sh"
 source "$dir/utils.sh"
 
 backup() {
-    run backup.sh $dir $ui
+    run backup.sh $dir
 }
 
 restore() {
@@ -32,6 +49,12 @@ showDir() {
     pause
 }
 
+unknownOption() {
+    tput setaf 1
+    echo "Unknown option..." && sleep 2
+    tput reset
+}
+
 read_options() {
     local choice
     read -rp "Enter choice [1-5] " choice
@@ -43,11 +66,6 @@ read_options() {
     4) systemLogs ;;
     5) showProcesses ;;
     6) exit 0 ;;
-    *)
-        tput setaf 1
-        echo "Unknown option..." && sleep 2
-        tput reset
-        ;;
     esac
 }
 
