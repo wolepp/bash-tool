@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 dir=$1
 source $dir/ui.sh
 source $dir/utils.sh
