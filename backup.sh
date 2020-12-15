@@ -7,21 +7,9 @@ archiveName="home_$(basename $HOME)_$(date +%Y%m%d-%H%M%S).tar.gz"
 archivePath="$HOME"
 verbose=false
 
-validate_path() {
-    path="$1"
-    if [[ -f "$path" ]]; then
-        error "'$path' jest plikiem"
-        return 1
-    fi
-    if [[ ! -d "$path" ]]; then
-        error "folder '$path' nie istnieje"
-        return 2
-    fi
-    return 0
-}
 
 check_if_file_exists() {
-    validate_path $archivePath
+    validate_dir_path $archivePath
     validate="$?"
     if [[ "$validate" -gt 0 ]]; then
         return 1
@@ -59,9 +47,7 @@ validate_filename() {
 make_backup() {
     check_if_file_exists
     if [[ $? -ne 0 ]]; then return 4; fi
-    textcolor cyan
-    echo "Tworzę kopię zapasową..."
-    resetstyle
+    info "Tworzę kopię zapasową..."
     fullpath="$archivePath/$archiveName"
     
     if [[ "$verbose" = true ]]; then
@@ -69,9 +55,7 @@ make_backup() {
     else
         tar --exclude="$fullpath" -czf "$fullpath" "$folderToBackup"
     fi
-    textcolor green
-    echo "Utworzono kopię zapasową '$archiveName'"
-    resetstyle
+    success "Utworzono kopię zapasową '$archiveName'"
     pause
 }
 
@@ -108,11 +92,11 @@ change_archive_name() {
 change_save_path() {
     local newpath
     read -rp "Wpisz ścieżkę: " newpath
-    validate_path "$newpath"
+    validate_dir_path "$newpath"
     res="$?"
     while [[ "$res" -ne 0 ]]; do
         read -rp "Wpisz ścieżkę: " newpath
-        validate_path "$newpath"
+        validate_dir_path "$newpath"
         res="$?"
     done
     archivePath="$newpath"
@@ -121,11 +105,11 @@ change_save_path() {
 change_folder_to_backup() {
     local newdir
     read -rp "Wpisz ścieżkę: " newdir
-    validate_path "$newdir"
+    validate_dir_path "$newdir"
     res="$?"
     while [[ "$res" -ne 0 ]]; do
         read -rp "Wpisz ścieżkę: " newdir
-        validate_path "$newdir"
+        validate_dir_path "$newdir"
         res="$?"
     done
     folderToBackup="$newdir"
@@ -147,6 +131,7 @@ show_backup_menu() {
     fi
     resetstyle
     thick_divider
+    echo
     echo "1. Utwórz kopię zapasową"
     echo "2. Utwórz kopię zapasową (z domyślną, zaktualizowaną nazwą)"
     thin_divider

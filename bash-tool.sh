@@ -28,7 +28,7 @@ backup() {
 }
 
 restore() {
-    echo "Restoring" && sleep 1
+    run restore.sh $dir
 }
 
 diskHealth() {
