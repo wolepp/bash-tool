@@ -118,6 +118,7 @@ change_folder_to_backup() {
 show_backup_menu() {
     thin_divider
     printcenter "BACKUP"
+    echo
     echo "Folder do zbackupowania: $(textcolor green)$folderToBackup"
     resetstyle
     echo "Docelowa nazwa archiwum: $(textcolor green)$archiveName"
@@ -130,6 +131,7 @@ show_backup_menu() {
         echo "Szczegółowe wypisywanie: $(textcolor yellow)nie"
     fi
     resetstyle
+    echo
     thick_divider
     echo
     echo "1. Utwórz kopię zapasową"

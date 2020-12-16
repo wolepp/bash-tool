@@ -93,6 +93,7 @@ change_path_to_restore() {
 show_restore_menu() {
     thin_divider
     printcenter "RESTORE"
+    echo
     echo "Plik z kopią:                $(textcolor green)$backupPath"
     resetstyle
     echo "Gdzie przywrócić:            $(textcolor green)$restorePath"
@@ -107,6 +108,7 @@ show_restore_menu() {
         echo "Szczegółowe wypisywanie:     $(textcolor yellow)nie"
     fi
     resetstyle
+    echo
     thick_divider
     echo
     echo "1. Przywróć kopię zapasową"
