@@ -200,7 +200,7 @@ switch_dry_run() {
 
 show_diskhealth_menu() {
     thin_divider
-    printcenter "DISK-HEALTH"
+    printcenter "DISK HEALTH"
     print_disk_info_table
     echo
     echo "Do sprawdzenia:          ${selected_to_check[@]}"

@@ -36,7 +36,7 @@ diskHealth() {
 }
 
 systemLogs() {
-    echo "Log 1" && sleep 1
+    run system-logs.sh $dir
 }
 
 showProcesses() {
