@@ -5,6 +5,7 @@ source $dir/utils.sh
 declare -A disks
 declare -a selected_to_check
 verbose=false
+dry_run=true
 
 # do tabeli
 path_idx=0
@@ -20,33 +21,81 @@ divider="============================"
 divider="$divider$divider"
 
 
+unwrap_from_quotes() {
+    local word="$1"
+    word="${word%\"}"
+    word="${word#\"}"
+    echo "$word"
+}
+
+check_disk() {
+    local path="$1"
+    shift
+    local opts="$@"
+    if [[ "$dry_run" = true ]]; then
+        info "(Aktywny dry-run, nic nie robię)"
+        opts="$opts -N"
+    fi
+    if [[ "$verbose" = true ]]; then
+        opts="$opts -V"
+    fi
+    if [ -n "$opts" ]; then
+        sudo fsck $opts $path
+    else 
+        sudo fsck $path
+    fi
+}
+
 check_selected_disks() {
+    if [ "${#selected_to_check[@]}" -eq 0 ]; then
+        error "Brak wybranych dysków"
+        return
+    fi
     info "Sprawdzam zdrowie wybranych dysków..."
     for disk in ${selected_to_check[@]}; do
         local path=(${disks[\"$disk\"]})
-        echo "path: $path"
-        echo "fsck "$path""
-        # TODO: dlaczego to niżej nie działa?!
-        fsck -n $path
+        path=$(unwrap_from_quotes "$path")
+        check_disk "$path"
     done
+    success "Zakończono"
     pause
 }
 
 check_all_but_root() {
-    info "Wszystkie bez roota"
+    info "Sprawdzam zdrowie dysków z /etc/fstab (bez roota)..."
+    local opts="-AR"
+    if [[ "$dry_run" = true ]]; then
+        info "(Aktywny dry-run, nic nie robię)"
+        opts="$opts -N"
+    fi
+    if [[ "$verbose" = true ]]; then
+        opts="$opts -V"
+    fi
+    sudo fsck $opts
+    success "Zakończono"
     pause
 }
 
 check_not_mounted() {
-    info "Wszystkie niezamontowane"
+    info "Sprawdzam zdrowie niezamontowanych dysków z /etc/fstab..."
+    local opts="-ARM"
+    if [[ "$dry_run" = true ]]; then
+        info "(Aktywny dry-run, nic nie robię)"
+        opts="$opts -N"
+    fi
+    if [[ "$verbose" = true ]]; then
+        opts="$opts -V"
+    fi
+    sudo fsck $opts
+    success "Zakończono"
     pause
 }
 
 choose_disks() {
     local chosen
     read -rp "Dysk: " chosen
-    if [[ "${!disks[@]}" =~ "${chosen}" ]]; then
-        if [[ " ${selected_to_check[@]} " =~ "${chosen}" ]]; then
+    if [[ " ${!disks[@]} " =~ " \"${chosen}\" " ]]; then
+        if [[ " ${selected_to_check[@]} " =~ " ${chosen} " ]]; then
             info "Dysk jest już wybrany" && pause
         else
             selected_to_check+=("$chosen")
@@ -59,8 +108,8 @@ choose_disks() {
 unchoose_disk() {
     local unchosen
     read -rp "Dysk: " unchosen
-    if [[ "${!disks[@]}" =~ "${unchosen}" ]]; then
-        if [[ ! " ${selected_to_check[@]} " =~ "${unchosen}" ]]; then
+    if [[ " ${!disks[@]} " =~ " \"${unchosen}\" " ]]; then
+        if [[ ! " ${selected_to_check[@]} " =~ " ${unchosen} " ]]; then
             info "Ten dysk nie był wybrany" && pause
         else
             local new_selected=()
@@ -141,6 +190,14 @@ switch_verbose() {
     fi
 }
 
+switch_dry_run() {
+    if [[ "$dry_run" = true ]]; then
+        dry_run=false
+    else
+        dry_run=true
+    fi
+}
+
 show_diskhealth_menu() {
     thin_divider
     printcenter "DISK-HEALTH"
@@ -152,18 +209,24 @@ show_diskhealth_menu() {
     else
         echo "Szczegółowe wypisywanie: $(textcolor yellow)nie$(resetstyle)"
     fi
+    if [[ "$dry_run" = true ]]; then
+        echo "Nic nie rób (dry-run):   $(textcolor green)aktywny$(resetstyle)"
+    else
+        echo "Nic nie rób (dry-run):   $(textcolor red)nieaktywny - uruchomi 'fsck' z sudo$(resetstyle)"
+    fi
     echo
     thick_divider
     echo
     echo "Sprawdź zdrowie:"
     echo "  1. wybranych dysków"
-    echo "  2. wszystkich dysków z wyłączeniem roota"
-    echo "  3. wszystkich niezamontowanych dysków"
+    echo "  2. wszystkich dysków z /etc/fstab (bez roota)"
+    echo "  3. jak 2. z pominięciem zamontowanych"
     thin_divider
     echo "5. Wybierz dyski do sprawdzenia"
     echo "6. Zrezygnuj z dysku do sprawdzenia"
     thin_divider
     echo "8. Przestaw szczegółowe wypisywanie programu fsck"
+    echo "9. Przestaw tryb dry-run"
     echo "0. Powrót"
     thin_divider
 }
@@ -178,6 +241,7 @@ read_options() {
     5) choose_disks ;;
     6) unchoose_disk ;;
     8) switch_verbose ;; 
+    9) switch_dry_run ;; 
     0) exit 0 ;;
     esac
 }
