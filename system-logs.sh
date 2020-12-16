@@ -62,7 +62,6 @@ show_logs_with_criterias() {
     if [ -n "$service" ]; then
         opts="$opts -u $service"
     fi
-    error "$opts"
     show_logs_no_check $opts
 }
 

@@ -57,14 +57,13 @@ unknownOption() {
 
 read_options() {
     local choice
-    read -rp "Enter choice [1-5] " choice
+    read -rp "Wybierz program [1-4]: " choice
     case $choice in
     dir) showDir ;;
     1) backup ;;
     2) restore ;;
     3) diskHealth ;;
     4) systemLogs ;;
-    5) showProcesses ;;
     0) exit 0 ;;
     esac
 }
@@ -73,12 +72,13 @@ show_main_menu() {
     clear
     thin_divider
     printcenter "MENU GŁÓWNE"
-    echo "1. backup"
-    echo "2. przywracanie"
-    echo "3. disk health"
-    echo "4. logi systemowe"
-    echo "5. procesy"
-    echo "0. wyjście"
+    printcenter "Witaj w programie bash-tool." 2
+    echo "Wybierz program"
+    echo "   1. backup"
+    echo "   2. przywracanie"
+    echo "   3. disk health"
+    echo "   4. logi systemowe"
+    echo "   0. wyjście"
     thin_divider
 }
 
