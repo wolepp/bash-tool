@@ -32,7 +32,7 @@ restore() {
 }
 
 diskHealth() {
-    echo "Wszystko zdrowe" && sleep 1
+    run disk-health.sh $dir
 }
 
 systemLogs() {
