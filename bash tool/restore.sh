@@ -1,6 +1,6 @@
-dir=$1
-source $dir/ui.sh
-source $dir/utils.sh
+dir="$1"
+source "$dir/ui.sh"
+source "$dir/utils.sh"
 
 restorePath="$HOME"
 backupPath=""

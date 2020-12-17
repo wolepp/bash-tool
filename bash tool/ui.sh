@@ -1,6 +1,3 @@
-#!/usr/bin/env bash
-# Wojciech Lepich
-
 width=$(tput cols)
 height=$(tput lines)
 thin_divider_char="-"

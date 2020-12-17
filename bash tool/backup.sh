@@ -1,6 +1,6 @@
-dir=$1
-source $dir/ui.sh
-source $dir/utils.sh
+dir="$1"
+source "$dir/ui.sh"
+source "$dir/utils.sh"
 
 folderToBackup=$HOME
 archiveName="home_$(basename $HOME)_$(date +%Y%m%d-%H%M%S).tar.gz"

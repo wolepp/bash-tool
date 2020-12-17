@@ -1,7 +1,6 @@
-dir=$1
-dir="/home/wojtek/Dev/bash-tool"
-source $dir/ui.sh
-source $dir/utils.sh
+dir="$1"
+source "$dir/ui.sh"
+source "$dir/utils.sh"
 
 no_old_boots=false
 reverse=true

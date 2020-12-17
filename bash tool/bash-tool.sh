@@ -35,19 +35,19 @@ source "$dir/ui.sh"
 source "$dir/utils.sh"
 
 backup() {
-    run backup.sh $dir
+    run backup.sh "$dir"
 }
 
 restore() {
-    run restore.sh $dir
+    run restore.sh "$dir"
 }
 
 diskHealth() {
-    run disk-health.sh $dir
+    run disk-health.sh "$dir"
 }
 
 systemLogs() {
-    run system-logs.sh $dir
+    run system-logs.sh "$dir"
 }
 
 showProcesses() {

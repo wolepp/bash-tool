@@ -1,10 +1,7 @@
-#!/usr/bin/env bash
-# Wojciech Lepich
-
 run() {
-    script=$1
+    script="$1"
     shift
-    /usr/bin/env bash $dir/$script "$@"
+    /usr/bin/env bash "$dir/$script" "$@"
 }
 
 pause() {
