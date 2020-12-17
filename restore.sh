@@ -2,7 +2,7 @@ dir=$1
 source $dir/ui.sh
 source $dir/utils.sh
 
-restorePath="$HOME/testRestore"
+restorePath="$HOME"
 backupPath=""
 backupsDir="$HOME"
 
@@ -47,6 +47,9 @@ choose_backup_file() {
     echo "Wpisz nazwę kopii zapasowej (lub pełną ścieżkę, jeśli kopia"
     echo "nie znajduje się w folderze z kopiami zapasowymi"
     read -rp "Wpisz nazwę/ścieżkę: " backupfile
+    if [ -z "$backupfile" ]; then
+        return
+    fi
     if [[ ! "$backupfile" =~ /.* ]]; then
         backupfile="$backupsDir/$backupfile"
     fi
@@ -67,6 +70,9 @@ choose_backup_file() {
 change_archives_dir() {
     local dir
     read -rp "Ścieżka folderu: " dir
+    if [ -z "$dir" ]; then
+        return
+    fi
     validate_dir_path "$dir"
     res="$?"
     while [[ "$res" -ne 0 ]]; do
@@ -80,6 +86,9 @@ change_archives_dir() {
 change_path_to_restore() {
     local path
     read -rp "Ścieżka docelowa: " dir
+    if [ -z "$path" ]; then
+        return
+    fi
     validate_dir_path "$dir"
     res="$?"
     while [[ "$res" -ne 0 ]]; do

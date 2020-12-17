@@ -182,7 +182,7 @@ show_system_logs_menu() {
     echo " r. zmień kolejność"
     thin_divider
     echo "Pokaż logi:"
-    echo " 1. wg zastosowanych kryteriów"
+    echo " 1. wg zastosowanych kryteriów (nie otwarcie znaczy brak znalezionych logów wg kryteriów)"
     echo " 2. dziesięć najnowszych"
     echo " 3. wszystkie od najnowszego"
     echo " 4. tylko z najwyższym priorytetem"

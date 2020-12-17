@@ -35,14 +35,17 @@ check_disk() {
     if [[ "$dry_run" = true ]]; then
         info "(Aktywny dry-run, nic nie robię)"
         opts="$opts -N"
-    fi
-    if [[ "$verbose" = true ]]; then
-        opts="$opts -V"
-    fi
-    if [ -n "$opts" ]; then
-        sudo fsck $opts $path
-    else 
-        sudo fsck $path
+        if [[ "$verbose" = true ]]; then
+            opts="$opts -V"
+        fi
+        fsck $opts $path
+    else
+        if [[ "$verbose" = true ]]; then
+            opts="$opts -V"
+        fi
+        if [ -n "$opts" ]; then
+            sudo fsck $opts $path
+        fi
     fi
 }
 
@@ -94,6 +97,9 @@ check_not_mounted() {
 choose_disks() {
     local chosen
     read -rp "Dysk: " chosen
+    if [ -z "$chosen" ]; then
+        return
+    fi
     if [[ " ${!disks[@]} " =~ " \"${chosen}\" " ]]; then
         if [[ " ${selected_to_check[@]} " =~ " ${chosen} " ]]; then
             info "Dysk jest już wybrany" && pause
@@ -108,6 +114,9 @@ choose_disks() {
 unchoose_disk() {
     local unchosen
     read -rp "Dysk: " unchosen
+    if [ -z "$unchosen" ]; then
+        return
+    fi
     if [[ " ${!disks[@]} " =~ " \"${unchosen}\" " ]]; then
         if [[ ! " ${selected_to_check[@]} " =~ " ${unchosen} " ]]; then
             info "Ten dysk nie był wybrany" && pause

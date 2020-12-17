@@ -2,12 +2,19 @@
 # Wojciech Lepich
 
 Help() {
-    echo "Program bash-tool"
-    echo
-    echo "Program do zarządzania systemem"
-    echo "Tworzy kopie zapasowe i przywraca"
-    echo "Pokazuje logi systemowe (jeszcze nie)"
-    echo "Pokazuje procesy (jeszcze nie)"
+echo "Użycie: ./bash-tool.sh [-h]"
+echo ""
+echo "Interaktywny program umożliwiający:"
+echo "    tworzenie kopii zapasowych"
+echo "    przywracanie kopii zapasowych"
+echo "    sprawdzenia zdrowia dysków (przy pomocy fsck)"
+echo "    odczytywania logów systemowych (przy pomocy journalctl)"
+echo ""
+echo "Aby anulować zapytanie (np. o podanie nowej ścieżki, nazwy)"
+echo "należy pozostawić puste pole i wcisnąć [Enter]"
+echo ""
+echo "Argumenty:"
+echo "    -h pokazuje tę pomoc i kończy działanie"
 }
 
 while getopts ":h" option; do
@@ -15,6 +22,10 @@ while getopts ":h" option; do
         h)
             Help
             exit 0
+            ;;
+        *)
+            echo "Nieznana opcja $option."
+            exit 1
             ;;
     esac
 done
@@ -57,7 +68,7 @@ unknownOption() {
 
 read_options() {
     local choice
-    read -rp "Wybierz program [1-4]: " choice
+    read -rp "Wybierz opcję [0-4]: " choice
     case $choice in
     dir) showDir ;;
     1) backup ;;
@@ -73,7 +84,7 @@ show_main_menu() {
     thin_divider
     printcenter "MENU GŁÓWNE"
     printcenter "Witaj w programie bash-tool." 2
-    echo "Wybierz program"
+    echo "Dostępne programy:"
     echo "   1. backup"
     echo "   2. przywracanie"
     echo "   3. disk health"

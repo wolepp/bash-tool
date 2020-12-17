@@ -79,6 +79,9 @@ make_backup_update_time() {
 change_archive_name() {
     local newname
     read -rp "Wpisz nazwę (bez rozszerzenia): " newname
+    if [ -z "$newname" ]; then
+        return
+    fi
     validate_filename "$newname"
     res="$?"
     while [[ "$res" -ne 0 ]]; do
@@ -92,6 +95,9 @@ change_archive_name() {
 change_save_path() {
     local newpath
     read -rp "Wpisz ścieżkę: " newpath
+    if [ -z "$newpath" ]; then
+        return
+    fi
     validate_dir_path "$newpath"
     res="$?"
     while [[ "$res" -ne 0 ]]; do
@@ -105,6 +111,9 @@ change_save_path() {
 change_folder_to_backup() {
     local newdir
     read -rp "Wpisz ścieżkę: " newdir
+    if [ -z "$newdir" ]; then
+        return
+    fi
     validate_dir_path "$newdir"
     res="$?"
     while [[ "$res" -ne 0 ]]; do
