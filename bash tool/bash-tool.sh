@@ -8,10 +8,20 @@ echo "Interaktywny program umożliwiający:"
 echo "    tworzenie kopii zapasowych"
 echo "    przywracanie kopii zapasowych"
 echo "    sprawdzenia zdrowia dysków (przy pomocy fsck)"
-echo "    odczytywania logów systemowych (przy pomocy journalctl)"
+echo "    odczytywania logów systemowych"
 echo ""
 echo "Aby anulować zapytanie (np. o podanie nowej ścieżki, nazwy)"
 echo "należy pozostawić puste pole i wcisnąć [Enter]"
+echo ""
+echo "Kopie zapasowe domyślnie tworzone są w folderze domowym."
+echo "W celach bezpieczeństwa zalecana zmiana miejsca utworzenia"
+echo "na inny dysk lub późniejsze skopiowanie jej w bezpieczne miejsce."
+echo ""
+echo "Do działania z kopiami zapasowymi wymagany 'tar'"
+echo "Do sprawdzenia zdrowia dysków wymagany 'fsck'"
+echo ""
+echo "Logi systemowe odczytywane przez 'journalctl' na systemach z systemd"
+echo "lub z folderu '/var/log/' na systemach z sysvinit"
 echo ""
 echo "Argumenty:"
 echo "    -h pokazuje tę pomoc i kończy działanie"
@@ -94,12 +104,6 @@ show_main_menu() {
 }
 
 # =========== MAIN LOOP
-# clear
-# tput cup $((LINES / 2)) $((COLUMNS / 2 - 9))
-# tput rev
-# tput civis
-# echo "Admin tool loading" && sleep 3
-# Start cleaning up our screen...
 tput norm
 tput clear
 tput sgr0
