@@ -256,6 +256,10 @@ read_options() {
 }
 
 # ============================== Main Loop
+if !does_command_exist "fsck";  then
+    error "Nie znaleziono 'fsck'"
+    exit 1
+fi
 tput clear
 tput rc
 find_disks

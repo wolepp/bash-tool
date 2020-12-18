@@ -22,6 +22,13 @@ success() {
     echo "$(textcolor green)$1$(resetstyle)"
 }
 
+does_command_exist() {
+    if command -v "$1" &> /dev/null; then
+        return 0
+    fi
+    return 1
+}
+
 validate_archive_path() {
     local path="$1"
     if [ ! -f "$path" ]; then

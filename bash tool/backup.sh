@@ -173,6 +173,10 @@ read_options() {
 }
 
 # ============================== Main Loop
+if !does_command_exist "tar";  then
+    error "Nie znaleziono 'tar'"
+    exit 1
+fi
 tput clear
 tput rc
 while true; do
